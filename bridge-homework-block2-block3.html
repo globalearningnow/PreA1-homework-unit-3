@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Homework · Before Class 3</title>
+<style>
+  :root{
+    --green:#2D4A3E; --cream:#F5EFE4; --paper:#FBF8F1; --terra:#C4622D;
+    --terraLite:#E8915A; --ink:#23382F; --muted:#7C8C82; --line:#D8CFBE; --good:#3E7C59;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{min-height:100vh;background:var(--green);color:var(--cream);font-family:Calibri,"Segoe UI",system-ui,sans-serif;padding:28px 16px 48px;}
+  .wrap{max-width:640px;margin:0 auto;}
+  .eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:700;color:var(--terraLite);display:flex;justify-content:space-between;align-items:baseline;}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:30px;line-height:1.15;margin:8px 0 4px;color:#fff;}
+  .lede{font-size:15px;color:#C9D6CD;margin:0 0 26px;max-width:54ch;}
+  .card{background:var(--paper);color:var(--ink);border-radius:14px;padding:20px 20px 22px;margin:0 0 18px;box-shadow:0 10px 24px rgba(0,0,0,.18);}
+  .tasknum{font-family:Georgia,serif;font-size:13px;font-weight:700;color:#fff;background:var(--terra);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 26px;}
+  .thead{display:flex;gap:12px;align-items:center;margin-bottom:4px;}
+  .ttitle{font-family:Georgia,serif;font-size:19px;color:var(--ink);}
+  .time{font-size:12px;color:var(--muted);margin-left:auto;font-weight:600;}
+  .tsub{font-size:13px;color:var(--muted);margin:2px 0 14px 38px;}
+  .btn{font-family:Calibri,"Segoe UI",sans-serif;font-size:15px;font-weight:700;color:#fff;background:var(--terra);border:none;border-radius:9px;padding:11px 20px;margin-top:16px;cursor:pointer;}
+  .btn:hover{background:#AE5526;}
+  .btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .scoreline{margin-top:12px;font-size:14px;color:var(--ink);font-weight:600;display:none;}
+  .warn{font-size:12.5px;color:var(--terra);margin:2px 0 12px 38px;display:none;}
+  .ok{border-color:var(--good)!important;background:#EDF6F0!important;}
+  .no{border-color:var(--terra)!important;background:#FBEDE4!important;}
+  .mark{font-size:13px;font-weight:700;min-width:96px;text-align:left;}
+  .mark.ok{color:var(--good);} .mark.no{color:var(--terra);}
+
+  /* task 1 audio */
+  .row{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line);}
+  .row:first-of-type{border-top:none;}
+  .play{font-family:Calibri,"Segoe UI",sans-serif;font-size:14px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:8px;padding:8px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;}
+  .play:hover{background:#24382e;} .play:disabled{opacity:.55;cursor:default;}
+  .spk{font-family:Calibri,sans-serif;font-size:13px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:7px;padding:5px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;flex:0 0 auto;}
+  .spk:hover{background:#24382e;} .spk:disabled{opacity:.5;cursor:default;}
+  .txt{font-family:Calibri,"Segoe UI",sans-serif;font-size:15px;width:150px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);}
+  .txt:focus{outline:2px solid var(--terraLite);outline-offset:1px;border-color:var(--terra);}
+
+  /* task 2 chips */
+  .bank{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px 38px;}
+  .chip{font-family:Calibri,"Segoe UI",sans-serif;font-size:15px;font-weight:700;color:var(--terra);background:#fff;border:1.5px solid var(--terra);border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .chip.sel{background:var(--terra);color:#fff;}
+  .chip.used{opacity:.28;pointer-events:none;}
+  .qline{font-family:Georgia,serif;font-size:16.5px;color:var(--ink);padding:9px 0;border-top:1px solid var(--line);display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+  .qline:first-of-type{border-top:none;}
+  .blank{display:inline-flex;align-items:center;justify-content:center;min-width:74px;height:32px;border-bottom:2px dashed var(--terra);color:var(--terra);font-family:Calibri,sans-serif;font-weight:700;font-size:15px;cursor:pointer;padding:0 6px;}
+  .blank.filled{border-bottom:2px solid var(--good);}
+  .blank.ok{color:var(--good);} .blank.no{color:var(--terra);}
+  .qtail{color:var(--ink);}
+
+  /* task 3 inline options */
+  .psent{font-family:Georgia,serif;font-size:16.5px;color:var(--ink);padding:11px 0;border-top:1px solid var(--line);line-height:1.9;}
+  .psent:first-of-type{border-top:none;}
+  .opt{font-family:Calibri,"Segoe UI",sans-serif;font-size:14px;font-weight:700;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:5px 13px;margin:0 3px;cursor:pointer;}
+  .opt.sel{background:var(--terra);color:#fff;border-color:var(--terra);}
+  .opt.ok{background:#EDF6F0;border-color:var(--good);color:var(--good);}
+  .opt.no{background:#FBEDE4;border-color:var(--terra);color:var(--terra);}
+
+  /* task 4 ordering */
+  .oline{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:9px;}
+  .oline.ok{border-left-color:var(--good);background:#EDF6F0;}
+  .oline.no{border-left-color:var(--terra);}
+  .owho{font-family:Calibri,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);min-width:74px;}
+  .otext{font-family:Georgia,serif;font-size:15px;color:var(--ink);flex:1;}
+  .arrows{display:flex;flex-direction:column;gap:3px;}
+  .arrow{font-family:Calibri,sans-serif;font-size:13px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:6px;width:30px;height:20px;cursor:pointer;line-height:1;}
+  .arrow:hover{background:#24382e;} .arrow:disabled{opacity:.3;cursor:default;}
+
+  .foot{text-align:center;color:#9FB0A6;font-size:13px;margin-top:8px;}
+  .foot b{font-family:Georgia,serif;color:var(--cream);font-weight:400;}
+  @media (max-width:460px){ .txt{width:130px;} .bank,.tsub{margin-left:0;} .owho{min-width:0;} }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow"><span>Homework · Before Class 3</span><span>Pre-A1</span></div>
+    <h1>Get ready for next class</h1>
+    <p class="lede">Four quick mini-games to meet the new language before we check into the hotel next class. About ten minutes. Each one checks itself.</p>
+
+    <!-- 1 — listen & write the phone number -->
+    <section class="card" id="phoneCard">
+      <div class="thead"><span class="tasknum">1</span><span class="ttitle">Catch the phone number</span><span class="time">3 min</span></div>
+      <p class="tsub">The receptionist reads a number. Press play and write the digits you hear. Play again if you need to.</p>
+      <p class="warn" id="phoneWarn">No voice available in this browser — try Chrome or Safari for the audio.</p>
+      <div class="rows" id="phoneRows"></div>
+      <button class="btn" id="phoneBtn">Check</button>
+      <p class="scoreline" id="phoneScore"></p>
+    </section>
+
+    <!-- 2 — Wh- question chips -->
+    <section class="card" id="whCard">
+      <div class="thead"><span class="tasknum">2</span><span class="ttitle">Ask the question</span><span class="time">3 min</span></div>
+      <p class="tsub">Tap a word, then tap the gap to place it. Tap a filled gap to take it back.</p>
+      <div class="bank" id="whBank"></div>
+      <div id="whLines"></div>
+      <button class="btn" id="whBtn">Check</button>
+      <p class="scoreline" id="whScore"></p>
+    </section>
+
+    <!-- 3 — possessive adjectives -->
+    <section class="card" id="posCard">
+      <div class="thead"><span class="tasknum">3</span><span class="ttitle">Whose is it?</span><span class="time">2 min</span></div>
+      <p class="tsub">Tap the correct word for each sentence.</p>
+      <div id="posLines"></div>
+      <button class="btn" id="posBtn">Check</button>
+      <p class="scoreline" id="posScore"></p>
+    </section>
+
+    <!-- 4 — hotel check-in ordering -->
+    <section class="card" id="hotelCard">
+      <div class="thead"><span class="tasknum">4</span><span class="ttitle">Check in at the hotel</span><span class="time">2 min</span></div>
+      <p class="tsub">The conversation is mixed up. Use the arrows to put it in order.</p>
+      <div id="hotelLines"></div>
+      <button class="btn" id="hotelBtn">Check</button>
+      <p class="scoreline" id="hotelScore"></p>
+    </section>
+
+    <p class="foot">See you in class — <b>Fernanda</b></p>
+  </div>
+
+<script>
+  function digitsOnly(s){ return (s||"").replace(/\D/g,""); }
+  function norm(s){ return (s||"").trim().toLowerCase().replace(/\s+/g," "); }
+
+  /* shared full-sentence audio */
+  var Speech = (function(){
+    var supported = ("speechSynthesis" in window) && ("SpeechSynthesisUtterance" in window);
+    var enVoice = null;
+    function pick(){ if(!supported) return; var vs=window.speechSynthesis.getVoices()||[]; enVoice=vs.filter(function(v){return /^en/i.test(v.lang);})[0]||vs[0]||null; }
+    if (supported){ pick(); if (window.speechSynthesis.onvoiceschanged!==undefined) window.speechSynthesis.onvoiceschanged=pick; }
+    return {
+      supported: supported,
+      say: function(text, rate){ if(!supported) return; window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate=rate||0.92; if(enVoice)u.voice=enVoice; window.speechSynthesis.speak(u); }
+    };
+  })();
+
+  /* ---------- TASK 1: catch the phone number (audio) ---------- */
+  (function(){
+    var PHONES = [
+      { digits:"654821709", show:"654 82 17 09" },
+      { digits:"627409358", show:"627 40 93 58" },
+      { digits:"691057426", show:"691 05 74 26" }
+    ];
+    var supported = ("speechSynthesis" in window) && ("SpeechSynthesisUtterance" in window);
+    var rowsEl = document.getElementById("phoneRows");
+    var scoreEl = document.getElementById("phoneScore");
+    var warnEl = document.getElementById("phoneWarn");
+    var checked = false, enVoice = null;
+
+    function pickVoice(){ if(!supported) return; var vs=window.speechSynthesis.getVoices()||[]; enVoice = vs.filter(function(v){return /^en/i.test(v.lang);})[0] || vs[0] || null; }
+    if (supported){ pickVoice(); if (window.speechSynthesis.onvoiceschanged!==undefined) window.speechSynthesis.onvoiceschanged=pickVoice; }
+    else warnEl.style.display="block";
+
+    function readDigits(str, onDone){
+      if(!supported){ if(onDone)onDone(); return; }
+      var chars = str.split(""), i=0;
+      window.speechSynthesis.cancel();
+      function next(){
+        if (i>=chars.length){ if(onDone)onDone(); return; }
+        var u=new SpeechSynthesisUtterance(chars[i]); u.lang="en-US"; u.rate=0.8; if(enVoice)u.voice=enVoice;
+        u.onend=function(){ i++; setTimeout(next, 300); };
+        u.onerror=function(){ i++; setTimeout(next, 300); };
+        window.speechSynthesis.speak(u);
+      }
+      next();
+    }
+
+    PHONES.forEach(function(item, idx){
+      var row=document.createElement("div"); row.className="row";
+      var btn=document.createElement("button"); btn.className="play"; btn.type="button";
+      btn.innerHTML='<span>▶</span> Play'; btn.disabled=!supported; btn.setAttribute("aria-label","Play number "+(idx+1));
+      btn.addEventListener("click", function(){
+        var all=rowsEl.querySelectorAll(".play"); all.forEach(function(b){b.disabled=true;});
+        readDigits(item.digits, function(){ all.forEach(function(b){b.disabled=false;}); });
+      });
+      var inp=document.createElement("input"); inp.className="txt"; inp.placeholder="write the number";
+      inp.setAttribute("inputmode","numeric"); inp.setAttribute("aria-label","Number "+(idx+1));
+      inp.dataset.answer=item.digits; inp.dataset.show=item.show;
+      inp.addEventListener("input", function(){ if(checked){checked=false;clear();scoreEl.style.display="none";} });
+      var mark=document.createElement("span"); mark.className="mark";
+      row.appendChild(btn); row.appendChild(inp); row.appendChild(mark); rowsEl.appendChild(row);
+    });
+    function clear(){ rowsEl.querySelectorAll("input").forEach(function(e){e.classList.remove("ok","no");}); rowsEl.querySelectorAll(".mark").forEach(function(m){m.textContent="";m.className="mark";}); }
+    document.getElementById("phoneBtn").addEventListener("click", function(){
+      checked=true; var score=0,total=0;
+      rowsEl.querySelectorAll(".row").forEach(function(row){
+        var el=row.querySelector("input"), mark=row.querySelector(".mark"); total++;
+        var ok = digitsOnly(el.value)===el.dataset.answer;
+        el.classList.remove("ok","no"); el.classList.add(ok?"ok":"no");
+        mark.className="mark "+(ok?"ok":"no"); mark.textContent = ok?"✓":"→ "+el.dataset.show;
+        if(ok)score++;
+      });
+      scoreEl.style.display="block"; scoreEl.textContent="You got "+score+" / "+total+".";
+    });
+  })();
+
+  /* ---------- TASK 2: Wh- question chips ---------- */
+  (function(){
+    var LINES = [
+      { answer:"What",  tail:" is your name?" },
+      { answer:"Where", tail:" do you live?" },
+      { answer:"When",  tail:" is your birthday?" },
+      { answer:"How",   tail:" old are you?" },
+      { answer:"Who",   tail:" is your teacher?" }
+    ];
+    var CHIP_WORDS = ["Where","How","What","Who","When"];
+    var bank=document.getElementById("whBank");
+    var linesEl=document.getElementById("whLines");
+    var scoreEl=document.getElementById("whScore");
+    var selected=null, checked=false;
+
+    CHIP_WORDS.forEach(function(w){
+      var c=document.createElement("button"); c.className="chip"; c.type="button"; c.textContent=w; c.dataset.word=w;
+      c.addEventListener("click", function(){
+        if (c.classList.contains("used")) return;
+        if (selected===c){ c.classList.remove("sel"); selected=null; return; }
+        if (selected) selected.classList.remove("sel");
+        selected=c; c.classList.add("sel");
+      });
+      bank.appendChild(c);
+    });
+
+    LINES.forEach(function(line, i){
+      var q=document.createElement("div"); q.className="qline";
+      var blank=document.createElement("span"); blank.className="blank"; blank.dataset.answer=line.answer; blank.setAttribute("role","button"); blank.setAttribute("tabindex","0");
+      blank.addEventListener("click", function(){
+        if (blank.dataset.val){ // return chip
+          var used=bank.querySelector('.chip.used[data-word="'+blank.dataset.val+'"]');
+          if (used) used.classList.remove("used");
+          blank.textContent=""; blank.removeAttribute("data-val"); blank.classList.remove("filled","ok","no");
+        } else if (selected){
+          var w=selected.dataset.word;
+          blank.textContent=w; blank.dataset.val=w; blank.classList.add("filled");
+          selected.classList.add("used"); selected.classList.remove("sel"); selected=null;
+        }
+        if (checked){ checked=false; scoreEl.style.display="none"; blanksClearMarks(); }
+      });
+      var tail=document.createElement("span"); tail.className="qtail"; tail.textContent=line.tail;
+      var spk=document.createElement("button"); spk.className="spk"; spk.type="button"; spk.innerHTML='<span>▶</span> Listen';
+      spk.style.marginLeft="auto"; spk.disabled=!Speech.supported; spk.setAttribute("aria-label","Listen to the question");
+      spk.addEventListener("click", function(){ Speech.say(line.answer + line.tail); });
+      q.appendChild(blank); q.appendChild(tail); q.appendChild(spk); linesEl.appendChild(q);
+    });
+
+    function blanksClearMarks(){ linesEl.querySelectorAll(".blank").forEach(function(b){ b.classList.remove("ok","no"); }); }
+
+    document.getElementById("whBtn").addEventListener("click", function(){
+      checked=true; var score=0,total=0;
+      linesEl.querySelectorAll(".blank").forEach(function(b){
+        total++; var ok = (b.dataset.val||"")===b.dataset.answer;
+        b.classList.remove("ok","no"); b.classList.add(ok?"ok":"no");
+        if (!ok){ b.textContent=b.dataset.answer; }
+        if (ok) score++;
+      });
+      scoreEl.style.display="block"; scoreEl.textContent="You got "+score+" / "+total+".";
+    });
+  })();
+
+  /* ---------- TASK 3: possessive adjectives ---------- */
+  (function(){
+    var ROWS = [
+      { pre:"This is my brother.", post:"name is Tom.",        answer:"His",  opts:["His","Her","Their"] },
+      { pre:"This is my sister.",  post:"phone number is new.", answer:"Her",  opts:["His","Her","Our"] },
+      { pre:"We are the Ruiz family.", post:"room is 204.",     answer:"Our",  opts:["My","Our","Their"] },
+      { pre:"Mr and Mrs Lee are guests.", post:"passports, please.", answer:"Their", opts:["His","Our","Their"] }
+    ];
+    var linesEl=document.getElementById("posLines");
+    var scoreEl=document.getElementById("posScore");
+    var checked=false;
+
+    ROWS.forEach(function(r, i){
+      var p=document.createElement("div"); p.className="psent"; p.dataset.answer=r.answer;
+      p.appendChild(document.createTextNode(r.pre+" "));
+      r.opts.forEach(function(o){
+        var b=document.createElement("button"); b.className="opt"; b.type="button"; b.textContent=o; b.dataset.val=o;
+        b.addEventListener("click", function(){
+          p.querySelectorAll(".opt").forEach(function(x){ x.classList.remove("sel","ok","no"); });
+          b.classList.add("sel"); p.dataset.val=o;
+          if (checked){ checked=false; scoreEl.style.display="none"; }
+        });
+        p.appendChild(b);
+      });
+      p.appendChild(document.createTextNode(" "+r.post));
+      linesEl.appendChild(p);
+    });
+
+    document.getElementById("posBtn").addEventListener("click", function(){
+      checked=true; var score=0,total=ROWS.length;
+      linesEl.querySelectorAll(".psent").forEach(function(p){
+        var chosen=p.dataset.val, ans=p.dataset.answer;
+        p.querySelectorAll(".opt").forEach(function(b){
+          b.classList.remove("sel","ok","no");
+          if (b.dataset.val===ans) b.classList.add("ok");
+          else if (b.dataset.val===chosen) b.classList.add("no");
+        });
+        if (chosen===ans) score++;
+      });
+      scoreEl.style.display="block"; scoreEl.textContent="You got "+score+" / "+total+".";
+    });
+  })();
+
+  /* ---------- TASK 4: hotel check-in ordering ---------- */
+  (function(){
+    var CORRECT = [
+      { who:"Receptionist", text:"Good evening. Do you have a reservation?" },
+      { who:"You",          text:"Yes, it's under the name Ruiz." },
+      { who:"Receptionist", text:"Can I see your passport, please?" },
+      { who:"You",          text:"Here you are." }
+    ];
+    CORRECT.forEach(function(l,i){ l.pos=i; });
+    var order = [3,1,0,2].map(function(i){ return CORRECT[i]; }); // scrambled start
+    var linesEl=document.getElementById("hotelLines");
+    var scoreEl=document.getElementById("hotelScore");
+    var checked=false;
+
+    function render(){
+      linesEl.innerHTML="";
+      order.forEach(function(line, idx){
+        var row=document.createElement("div"); row.className="oline";
+        var who=document.createElement("span"); who.className="owho"; who.textContent=line.who;
+        var txt=document.createElement("span"); txt.className="otext"; txt.textContent=line.text;
+        var arrows=document.createElement("div"); arrows.className="arrows";
+        var up=document.createElement("button"); up.className="arrow"; up.type="button"; up.textContent="▲"; up.disabled=(idx===0); up.setAttribute("aria-label","Move up");
+        var dn=document.createElement("button"); dn.className="arrow"; dn.type="button"; dn.textContent="▼"; dn.disabled=(idx===order.length-1); dn.setAttribute("aria-label","Move down");
+        up.addEventListener("click", function(){ swap(idx, idx-1); });
+        dn.addEventListener("click", function(){ swap(idx, idx+1); });
+        arrows.appendChild(up); arrows.appendChild(dn);
+        var spk=document.createElement("button"); spk.className="spk"; spk.type="button"; spk.innerHTML='<span>▶</span>';
+        spk.disabled=!Speech.supported; spk.setAttribute("aria-label","Listen to this line");
+        spk.addEventListener("click", function(){ Speech.say(line.text); });
+        row.appendChild(who); row.appendChild(txt); row.appendChild(spk); row.appendChild(arrows);
+        linesEl.appendChild(row);
+      });
+    }
+    function swap(a,b){
+      var t=order[a]; order[a]=order[b]; order[b]=t;
+      if (checked){ checked=false; scoreEl.style.display="none"; }
+      render();
+    }
+    render();
+
+    document.getElementById("hotelBtn").addEventListener("click", function(){
+      checked=true; var score=0;
+      var rows=linesEl.querySelectorAll(".oline");
+      order.forEach(function(line, idx){
+        var ok = line.pos===idx; if(ok) score++;
+        rows[idx].classList.remove("ok","no"); rows[idx].classList.add(ok?"ok":"no");
+      });
+      scoreEl.style.display="block";
+      scoreEl.textContent = score===order.length ? "Perfect — that's the right order!" : (score+" / "+order.length+" lines in the right place.");
+    });
+  })();
+</script>
+</body>
+</html>
